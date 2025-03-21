@@ -22,7 +22,7 @@
         <p id="error" style="display: none;"></p>
         <input id="emailInput" placeholder="Email" />
         <input id="passwordInput" placeholder="********" type="password" />
-        <button id="authBtn" onclick="authenticate()">
+        <button id="authBtn" onclick="authenticate();">
             Submit
         </button>
         <hr />
@@ -178,7 +178,9 @@
         // access email and pass values
         const emailVal = email.value
         const passVal = password.value
-
+        
+        
+        
         // guard clauses... if authenticating, return
         if (
             isLoading ||
@@ -206,6 +208,7 @@
                 data = await response.json()
             } else {
                 // login an account
+                
                 const response = await fetch(apiBase + 'auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -214,6 +217,7 @@
                 data = await response.json()
             }
 
+            
             if (data.token) {
                 token = data.token
                 localStorage.setItem('token', token)

@@ -28,7 +28,7 @@ router.post('/register',(req: Request, res: Response ) => {
         // create a token
         const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SCRET? process.env.JWT_SCRET:'TEST_KEY', { expiresIn: '24h' })
         
-        res.json(token);
+        res.json({token: token});
     } catch (error) {
         res.status(StatusCodes.SERVICE_UNAVAILABLE).sendStatus(503);
         throw error
@@ -55,7 +55,6 @@ router.post('/login',(req: Request, res: Response) => {
             res.status(StatusCodes.UNAUTHORIZED).send({ message: "Invalid password" });
             return;
         }
-        console.log(user);
 
         // then we have a successful authentication
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET? process.env.JWT_SECRET: 'TEST_KEY', { expiresIn: '24h' })
