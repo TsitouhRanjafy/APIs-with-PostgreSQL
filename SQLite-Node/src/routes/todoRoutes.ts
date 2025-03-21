@@ -22,12 +22,22 @@ router.post("/",(req: Request, res: Response) => {
 
 // update todo by id
 router.put("/:id",(req: Request, res: Response) => {
-    
+    const { completed } = req.body;
+    const { id } = req.params;
+    const { page } = req.query;
+
+    const updateTodo = database.prepare(`UPDATE todos SET completed = ? WHERE id = ?`);
+    updateTodo.run(completed,id);
+    res.status(StatusCodes.OK).json({message: 'Todo completed'})
 })
 
 
 router.delete("/:id",(req: Request, res: Response) => {
-    
+    const { id } = req.params;
+    const deleteTodo = database.prepare(`DELETE FROM todos WHERE user_id = ? AND id = ?`);
+    deleteTodo.run(req.body.user_id,id);
+
+    res.status(StatusCodes.OK).send({message: "Todo deleted"});
 })
 
 
