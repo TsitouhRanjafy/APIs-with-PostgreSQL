@@ -26,7 +26,7 @@ router.post('/register',(req: Request, res: Response ) => {
         insertTodo.run(result.lastInsertRowid, defaultToDo);
 
         // create a token
-        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SCRET? process.env.JWT_SCRET:'TEST', { expiresIn: '24h' })
+        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SCRET? process.env.JWT_SCRET:'TEST_KEY', { expiresIn: '24h' })
         
         res.json(token);
     } catch (error) {
@@ -50,6 +50,16 @@ router.post('/login',(req: Request, res: Response) => {
         }
 
         const passwordIsValid = bcrypt.compareSync(password,user.password);
+        // if the password does not match, return out of the function
+        if (!passwordIsValid) {
+            res.status(StatusCodes.UNAUTHORIZED).send({ message: "Invalid password" });
+            return;
+        }
+        console.log(user);
+
+        // then we have a successful authentication
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET? process.env.JWT_SECRET: 'TEST_KEY', { expiresIn: '24h' })
+        res.json({ token })
 
     } catch (error) {
         res.status(StatusCodes.SERVICE_UNAVAILABLE).sendStatus(StatusCodes.SERVICE_UNAVAILABLE);
