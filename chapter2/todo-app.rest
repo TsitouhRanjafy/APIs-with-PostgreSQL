@@ -1,0 +1,19 @@
+### GET /
+GET http://localhost:8080
+
+### Register a user POST /AUTH/REGISTER
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "username": "Tsitohaina",
+    "password": "azerty02"
+}
+
+### Login a user POST /AUTH/LOGIN
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    
+}

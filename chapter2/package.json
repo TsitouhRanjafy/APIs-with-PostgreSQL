@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start:build": "npx tsc && dotenvx run -- node --trace-warnings ./dist/server.js"
+    "start:build": "npx tsc && dotenvx run -- node --experimental-strip-types --experimental-sqlite ./dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -12,9 +12,11 @@
   "description": "",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.39.0",
+    "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
@@ -22,6 +24,6 @@
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0",
-    "@types/http-status-codes": "^1.2.0"
+    "@types/jsonwebtoken": "^9.0.9"
   }
 }
