@@ -6,7 +6,7 @@ POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
-    "username": "Tsitohaina",
+    "username": "Tsilavina",
     "password": "azerty02"
 }
 
@@ -17,3 +17,6 @@ Content-Type: application/json
 {
     
 }
+
+### Get all users GET /AUTH/USERS
+GET http://localhost:8080/auth/users
