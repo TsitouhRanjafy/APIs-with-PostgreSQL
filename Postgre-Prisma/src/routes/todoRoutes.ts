@@ -1,5 +1,4 @@
 import express, { Request, Response} from 'express'
-import database from '../db.js'
 import { StatusCodes } from 'http-status-codes';
 import prisma from '../prismaClient.js';
 

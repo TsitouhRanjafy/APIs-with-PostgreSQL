@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { IJwtPayload } from '../model/user.type';
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
