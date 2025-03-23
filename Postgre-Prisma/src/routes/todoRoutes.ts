@@ -1,41 +1,62 @@
 import express, { Request, Response} from 'express'
 import database from '../db.js'
 import { StatusCodes } from 'http-status-codes';
+import prisma from '../prismaClient.js';
 
 const router = express.Router()
 
 // Get all todos for logged-in user
-router.get("/",(req: Request, res: Response) => {
-    const getTodos = database.prepare(`SELECT * FROM todos WHERE user_id = ?`);
-    const todos = getTodos.all(req.body.user_id);
+router.get("/", async (req: Request, res: Response) => {
+    const todos = await prisma.todo.findMany({
+        where: {
+            userId: req.body.user_id
+        }
+    });
+
     res.status(StatusCodes.OK).json(todos);
 })
 
 // Create a new todo
-router.post("/",(req: Request, res: Response) => {
+router.post("/",async (req: Request, res: Response) => {
     const  { task } = req.body
-    const insertTodo = database.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`);
-    const result = insertTodo.run(req.body.user_id, task)
+    
+    const newTodo = await prisma.todo.create({
+        data: {
+            userId: req.body.user_id,
+            task
+        }
+    })
 
-    res.json({ id: result.lastInsertRowid, task, completed: 0 });
+    res.status(StatusCodes.CREATED).json(newTodo);
 })
 
 // update todo by id
-router.put("/:id",(req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
     const { completed } = req.body;
     const { id } = req.params;
-    const { page } = req.query;
 
-    const updateTodo = database.prepare(`UPDATE todos SET completed = ? WHERE id = ?`);
-    updateTodo.run(completed,id);
-    res.status(StatusCodes.OK).json({message: 'Todo completed'})
+    const updateTodo = await prisma.todo.update({
+        where: { 
+            id: parseInt(id),
+            userId: req.body.user_id
+         },
+        data: { completed: !!completed } 
+        // si completed = "true",1,[] ça devient true 
+        // ça force la conversion en boolean true ou false
+        // req.body.completed est souvent "true","false","1","0"
+    })
+    res.status(StatusCodes.OK).json(updateTodo)
 })
 
 
-router.delete("/:id",(req: Request, res: Response) => {
+router.delete("/:id",async (req: Request, res: Response) => {
     const { id } = req.params;
-    const deleteTodo = database.prepare(`DELETE FROM todos WHERE user_id = ? AND id = ?`);
-    deleteTodo.run(req.body.user_id,id);
+    await prisma.todo.delete({
+        where: {
+            id: parseInt(id),
+            userId: req.body.user_id
+        }
+    })
 
     res.status(StatusCodes.OK).send({message: "Todo deleted"});
 })

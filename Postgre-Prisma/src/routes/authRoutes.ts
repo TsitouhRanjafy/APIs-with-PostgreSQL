@@ -1,9 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import database from '../db.js'
-import express, { Application, Request, Response, Router } from 'express'
-import { ReasonPhrases, StatusCodes } from 'http-status-codes'
-import { IUser } from '../model/user.type.js'
+import express, { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import prisma from '../prismaClient.js'
 
 const router = express.Router()
